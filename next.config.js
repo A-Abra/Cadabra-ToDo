@@ -1,7 +1,25 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    /* DEPRECIATED
+        images: {
+    domains: ['res.cloudinary.com'],
+    remotePatterns: [
+        {
+        protocol: "https",
+        hostname: "**",
+        },
+    ],
+    }
+    */
     images: {
-        domains: ['firebasestorage.googleapis.com']
+        remotePatterns: [
+            {
+                protocol: 'https',
+                // only firebasestorage links in db
+                hostname: 'firebasestorage.googleapis.com',
+                pathname: '**',
+            },
+        ],
     },
     // for vercel deployment
     typescript: {
