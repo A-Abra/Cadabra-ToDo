@@ -6,6 +6,12 @@ import { generateImage, generateImagePrompt } from "@/lib/openai";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
+// exporting this runtime variable is auto detected by vercel, deploying it on
+// h-runtime instead of the standard runtime initially
+// https://vercel.com/docs/functions/runtimes
+export const runtime = "edge";
+
+
 export async function POST(req: Request) {
     const { userId } = auth();
     if (!userId) {
