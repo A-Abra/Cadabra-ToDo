@@ -8,4 +8,4 @@ This project is a sleek and straight-forward to-do list application inspired by 
 
 ## Deployed on Vercel
 
-This project was deployed with the help of Vercel.
+This project was deployed with the help of Vercel, an American cloud platform-as-a-service company.
