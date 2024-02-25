@@ -4,7 +4,7 @@ This project is a sleek and straight-forward to-do list application inspired by 
 
 ## Built With
 
-* Nextjs14
+* [![Next][Next.js]][Next-url]
 * [Clerk](https://clerk.com/) - Security and authentication
 * [Shadcn](https://ui.shadcn.com/) - Tailwind styling
 * [TipTap Editor](https://tiptap.dev/) - Notion-like interface
