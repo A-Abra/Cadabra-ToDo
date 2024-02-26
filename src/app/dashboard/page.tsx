@@ -1,5 +1,5 @@
 import CreateNoteDialog from '@/components/CreateNoteDialog';
-import { ModeToggle } from '@/components/DarkMode';
+// import { ModeToggle } from '@/components/DarkMode';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { db } from '@/lib/db';
@@ -40,7 +40,6 @@ const DashboardPage = async (props: Props) => {
                             <UserButton />
                         </div>
                         {/* <ModeToggle /> ModeToggle component here */}
-                        <ModeToggle />
                     </div>
 
                     <div className='h-8'></div>
