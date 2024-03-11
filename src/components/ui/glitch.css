@@ -7,14 +7,19 @@
         -0.rgba(0, 255, 255, .75),
         0.025em 0.05em 0 rgba(0, 0, 255, .75);
 
-    animation: glitch 500ms infinite;
+    animation: glitch 500ms infinite, fadeIn 5s ease-in-out;
+}
+
+.to-dashboard {
+    animation: fadeIn 2s ease-in-out forwards;
+    animation-delay: 5.5s;
+    opacity: 0;
 }
 
 .glitch span {
     position: absolute;
     top: 10px;
     left: 0px;
-    display: inline-block;
     z-index: 1;
 }
 
@@ -30,6 +35,25 @@
     clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
     transform: translate(.0125em, 0.025em);
     opacity: 0.8;
+}
+
+/* Media Queries to adjust positioning of AI text when resizing window */
+@media (max-width: 1437px) and (min-width: 1293px) {
+    .glitch span:first-child {
+        transform: translate(-8.75em, 1.001em);
+    }
+    .glitch span:last-child {
+        transform: translate(-8.70em, 1.001em);
+    }
+}
+
+@media (max-width: 824px) {
+    .glitch span:first-child {
+        transform: translate(-4.00em, 1.001em);
+    }
+    .glitch span:last-child {
+        transform: translate(-3.95em, 1.001em);
+    }
 }
 
 @keyframes glitch {
@@ -80,6 +104,16 @@
             -0.025em 0 0 rgba(255, 0, 0, .75),
             -0.025em -0.025em 0 rgba(0, 255, 255, .75),
             -0.025em -0.05em 0 rgba(0, 0, 255, .75);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
     }
 }
 

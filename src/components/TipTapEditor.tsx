@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useRef } from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import { StarterKit } from '@tiptap/starter-kit'
 import TipTapMenuBar from './TipTapMenuBar'
@@ -12,14 +12,16 @@ import Text from '@tiptap/extension-text'
 import { useCompletion } from 'ai/react'
 
 // NoteType from schema.ts
-type Props = {note: NoteType};
+type Props = { note: NoteType };
 
 const TipTapEditor = ({ note }: Props) => {
     // if there is no editorState then set to empty string && '<h1>${note.name}<h1>' is for the note name just for U.E.
     const [editorState, setEditorState] = React.useState(note.editorState || `<h1>${note.name}</h1>`);
-    const {complete, completion} = useCompletion({
+    const { complete, completion } = useCompletion({
         api: '/api/completion'
     });
+    // button reference attached in html to access button element in order to click
+    const buttonRef = useRef(null);
 
     const saveNote = useMutation({
         mutationFn: async () => {
@@ -44,7 +46,7 @@ const TipTapEditor = ({ note }: Props) => {
             };
         },
     });
-    
+
     const editor = useEditor({
         autofocus: true,
         extensions: [StarterKit, customText],
@@ -56,11 +58,11 @@ const TipTapEditor = ({ note }: Props) => {
         },
     });
 
-    /* when completion came back we keep track of a lastCompletion reference
-    which will not change or rerender the whole component whenever there
-    is a change. */
+    /* When the completion comes back we keep track of a lastCompletion 
+    reference which will not change or rerender the whole component 
+    whenever there is a change. */
     const lastCompletion = React.useRef('')
-    React.useEffect(() =>{
+    React.useEffect(() => {
         if (!completion || !editor) return;
         // diff represents individual tokens
         // after taking difference set last completion to finish the loop and get the latest token
@@ -88,7 +90,7 @@ const TipTapEditor = ({ note }: Props) => {
     Use dbounce for perfomance optimization rather than 
     continuously feeding in data by keystroke */
     const debouncedEditorState = useDebounce(editorState, 500); //delay by 500ms
-    React.useEffect(()=>{
+    React.useEffect(() => {
         // once debounce is triggered then hit endpoint to save
         // editorState within db
         if (debouncedEditorState === '') return;
@@ -103,11 +105,19 @@ const TipTapEditor = ({ note }: Props) => {
         // console.log(debouncedEditorState);
     }, [debouncedEditorState]);
     // updating debouncedEditorState dependencies gives weird bug where Saving button stuck in isPending loop
-    
+
     // React.useEffect(()=>{
     //     console.log(editorState);
     // }, [editorState]);
-    
+
+    // User can click Shift+a button as well to allow for more accessibility
+    const handleButtonClick = () => {
+        // editor?.getText() checks if editor exists before accessing method so if editor null, evals to undef
+        // || used for empty string as a fallback value to prevent errors
+        if (buttonRef.current) {
+            complete(editor?.getText().split(' ').slice(-30).join(' ') || ''); // Use empty string as fallback
+        }
+    };
 
     return (
         <>
@@ -125,9 +135,11 @@ const TipTapEditor = ({ note }: Props) => {
             <div className='h-4'></div>
             <span className='text-sm'>
                 Tip: Press{' '}
-                <kbd className='px-2 py1.5 text-xs font-semibold text-gray-800 bg-gray-200 border-gray-200 rounded-lg'>
+                <button className='px-2 py1.5 text-xs font-semibold text-gray-800 bg-gray-200 border-gray-200 rounded-lg'
+                    ref={buttonRef}
+                    onClick={handleButtonClick}>
                     Shift + A
-                </kbd> {' '}
+                </button> {' '}
                 for AI autocomplete
             </span>
         </>
